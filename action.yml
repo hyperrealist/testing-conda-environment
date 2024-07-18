@@ -28,7 +28,7 @@ runs:
       with:
         python-version: 3.11
     - name: Download Artifacts
-      run: python3 parse_for_artifacts.py -a "${{ inputs.run-id }}" -c "${{ inputs.test-conda-packed-name }}"
+      run: python3 ${{ github.action_path }}/parse_for_artifacts.py -a "${{ inputs.run-id }}" -c "${{ inputs.test-conda-packed-name }}"
       shell: bash
 #    - name: Print inputs
 #      shell: bash
