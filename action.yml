@@ -1,29 +1,43 @@
 name: 'testing-conda-environment'
+description: "Test a conda environment of a specific python version against all beamlines"
 inputs:
-  python-version:
-    description: 'Python version to use'
+  run-id:
+    required: true
+  test-conda-packed-name:
+    description: ''
     required: true
   org:
     required: true
+    description: ''
   repo:
     required: true
+    description: ''
   branch:
     required: true
+    description: ''
   beamline-acronym:
     required: true
+    description: ''
 runs:
   using: 'composite'
   steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-    - name: Print inputs
+    - name: Set Up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+    - name: Download Artifacts
+      run: python3 parse_for_artifacts.py -a "${{ inputs.run-id }}" -c "${{ inputs.test-conda-packed-name }}"
       shell: bash
-      run: |
-        echo "${{ inputs.python-version }}"
-        echo "${{ inputs.org }}"
-        echo "${{ inputs.repo }}"
-        echo "${{ inputs.branch }}"
-        echo "${{ inputs.beamline-acronym }}"
+#    - name: Print inputs
+#      shell: bash
+#      run: |
+#        echo "${{ inputs.python-version }}"
+#        echo "${{ inputs.org }}"
+#        echo "${{ inputs.repo }}"
+#        echo "${{ inputs.branch }}"
+#        echo "${{ inputs.beamline-acronym }}"
 #    - name: Set GitHub Path
 #      shell: bash
 #      run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
