@@ -27,7 +27,7 @@ def main():
             if element['workflow_run'].get('id') == int(args.action_run) and element['name'] == args.conda_name:
                 os.system(f"echo \"link: {str(element['url'])}\"")
 
-                os.system(f"GHA_TOKEN={os.environ['GHA_TOKEN']} bash download_artifacts.sh {args.repository} {args.organization} {str(element['id'])} {str(element['name'])}")
+                os.system(f"GHA_TOKEN={os.environ['GHA_TOKEN']} bash {os.environ['$ACTION_PATH']}/download_artifacts.sh {args.repository} {args.organization} {str(element['id'])} {str(element['name'])}")
 
                 print(args.repository)
                 print(args.organization)
