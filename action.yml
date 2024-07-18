@@ -29,6 +29,9 @@ runs:
         python-version: 3.11
     - name: Download Artifacts
       run: python3 ${{ github.action_path }}/parse_for_artifacts.py -a "${{ inputs.run-id }}" -c "${{ inputs.test-conda-packed-name }}"
+      env:
+        GHA_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ github.token }}
       shell: bash
 #    - name: Print inputs
 #      shell: bash
