@@ -90,17 +90,14 @@ runs:
     - name: Extracting, Activating and Unpacking Conda Artifact
       run: |
         unzip -v "${{ inputs.test-conda-packed-name }}.zip"
-        ls
         unzip "${{ inputs.test-conda-packed-name }}.zip"
-        ls
         mkdir -v -p "$CONDA_PREFIX/envs/${{ inputs.test-conda-packed-name }}"
         tar -xf "${{ inputs.test-conda-packed-name }}.tar.gz" -C "$CONDA_PREFIX/envs/${{ inputs.test-conda-packed-name }}"
-        ls "$CONDA_PREFIX/envs/${{ inputs.test-conda-packed-name }}"
-        ls "home/runner/miniconda/envs/${{ inputs.test-conda-packed-name }}"
-        pwd
         set +u
         eval "$(conda shell.bash hook)"
+        echo $CONDA_PREFIX
         conda activate "home/runner/miniconda/envs/${{ inputs.test-conda-packed-name }}"
+        echo $CONDA_PREFIX
         conda unpack && echo "Unpacked successfully!"
         set -u
         conda env list
@@ -109,7 +106,28 @@ runs:
       env:
         CONDA_PREFIX: home/runner/miniconda
       shell: bash
-
+    - name: Configuring Redis
+      uses: supercharge/redis-github-action@1.8.0
+      with:
+        redis-version: latest
+    - name: Configuring Mongo
+      uses: supercharge/mongodb-github-action@1.11.0
+      with:
+        mongodb-version: '4.4'
+    - name: Performing Beamline Actions
+      env:
+        BEAMLINE_ACRONYM: ${{ inputs.beamline_acronym }}
+      run: |
+        echo "Performing beamline-specific tasks..."
+        cfg_dir="/nsls2/data/$BEAMLINE_ACRONYM/shared/config"
+        if [[ ! -d "$cfg_dir" ]]; then
+          sudo mkdir -v -p "$cfg_dir" ||
+          (
+            echo "Error: Couldn't create dir: $cfg_dir"
+            exit 1
+          )
+        fi
+      shell: bash
 #    - name: Print inputs
 #      shell: bash
 #      run: |
