@@ -89,16 +89,18 @@ runs:
       shell: bash
     - name: Extracting, Activating and Unpacking Conda Artifact
       run: |
-        mkdir -v -p "${{ env.CONDA_PREFIX }}/envs/${{ env.TEST_CONDA_PACKED_NAME }}"
-        tar -xf "${{ env.TEST_CONDA_PACKED_NAME }}.tar.gz" -C "${{ env.CONDA_PREFIX }}/envs/${{ env.TEST_CONDA_PACKED_NAME }}"
+        mkdir -v -p "$CONDA_PREFIX/envs/${{ inputs.test-conda-packed-name }}"
+        tar -xf "${{ inputs.test-conda-packed-name }}.tar.gz" -C "$CONDA_PREFIX/envs/${{ inputs.test-conda-packed-name }}"
         set +u
         eval "$(conda shell.bash hook)"
-        conda activate "${{ env.CONDA_PREFIX }}/envs/${{ env.TEST_CONDA_PACKED_NAME }}"
+        conda activate "$CONDA_PREFIX/envs/${{ inputs.test-conda-packed-name }}"
         conda unpack && echo "Unpacked successfully!"
         set -u
         conda env list
         ls
         pwd
+      env:
+        CONDA_PREFIX: home/runner/miniconda
       shell: bash
 
 #    - name: Print inputs
