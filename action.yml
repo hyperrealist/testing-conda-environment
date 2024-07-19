@@ -34,6 +34,11 @@ runs:
       uses: actions/setup-python@v5
       with:
         python-version: 3.11
+    - name: Beamline Specific Configurations
+      run: python3 ${ACTION_PATH}/special_config.py -b "${{ inputs.beamline_acronym }}"
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+      shell: bash
     - name: Setting up Blackhole IOC
       run: |
         python3 -m pip install -U caproto
