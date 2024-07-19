@@ -23,6 +23,13 @@ runs:
   steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+    - name: Cloning Remote Repositories
+      run: |
+        mkdir "${{ inputs.repo }}"
+        git clone -b ${{ inputs.branch }} "${REPO_URL}" "${{ inputs.repo }}"
+      env:
+        REPO_URL: "https://github.com/$${{ inputs.org }}/${{ inputs.repo }}"
+      shell: bash
     - name: Set Up Python
       uses: actions/setup-python@v5
       with:
