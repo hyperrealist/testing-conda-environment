@@ -116,6 +116,8 @@ runs:
       shell: bash
     - name: Extracting, Activating and Unpacking Conda Artifact
       run: |
+        unzip -v "${{ inputs.test-conda-packed-name }}.zip"
+        unzip "${{ inputs.test-conda-packed-name }}.zip"
         mkdir -v -p "${CONDA_PREFIX}/envs/${{ inputs.test-conda-packed-name }}"
         tar -xf "${{ inputs.test-conda-packed-name }}.tar.gz" -C "$CONDA_PREFIX/envs/${{ inputs.test-conda-packed-name }}"
         set +u

@@ -33,5 +33,3 @@ echo -e "\nDownloading the artifact_id=${artifact_id} for the '${repo_name}' rep
 archive_name="${envname}.zip"
 
 curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${GHA_TOKEN}" -L -o ${archive_name} "https://api.github.com/repos/${org_name}/${repo_name}/actions/artifacts/${artifact_id}/zip"
-unzip -v ${archive_name}  # contents info
-unzip ${archive_name}
