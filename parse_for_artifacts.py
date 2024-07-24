@@ -13,6 +13,8 @@ def main():
                         help="jsonfile containg info about all artifacts created from some repository")
     parser.add_argument("-r", "--repository", default="nsls2-collection-tiled")
     args = parser.parse_args()
+
+    # Docs: https://docs.github.com/en/rest/actions/artifacts?apiVersion=2022-11-28
     artifact_command = f'''
     gh api \\
             -H \"Accept: application/vnd.github+json\" \\
