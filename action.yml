@@ -9,13 +9,13 @@ inputs:
     required: true
   org:
     required: true
-    description: 'github org'
+    description: 'beamline github org'
   repo:
     required: true
-    description: 'github repository name'
+    description: 'beamline ipython profile github repository name'
   branch:
     required: true
-    description: 'git branch name'
+    description: 'beamline ipython profile git branch name'
   beamline-acronym:
     required: true
     description: 'beamline tla'
