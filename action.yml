@@ -1,23 +1,24 @@
 name: 'testing-conda-environment'
-description: "Test a conda environment of a specific python version against all beamlines"
+description: 'Test a conda environment of a specific python version against all beamlines'
 inputs:
   run-id:
+    description: 'workflow run id from github'
     required: true
   test-conda-packed-name:
-    description: ''
+    description: 'name of the conda-packd environment, e.g: 2024-2.3-py311-tiled'
     required: true
   org:
     required: true
-    description: ''
+    description: 'github org'
   repo:
     required: true
-    description: ''
+    description: 'github repository name'
   branch:
     required: true
-    description: ''
+    description: 'git branch name'
   beamline-acronym:
     required: true
-    description: ''
+    description: 'beamline tla'
 runs:
   using: 'composite'
   steps:
@@ -117,9 +118,8 @@ runs:
     - name: Extracting, Activating and Unpacking Conda Artifact
       run: |
         unzip -v "${{ inputs.test-conda-packed-name }}.zip"
-        unzip "${{ inputs.test-conda-packed-name }}.zip"
         mkdir -v -p "${CONDA_PREFIX}/envs/${{ inputs.test-conda-packed-name }}"
-        tar -xf "${{ inputs.test-conda-packed-name }}.tar.gz" -C "$CONDA_PREFIX/envs/${{ inputs.test-conda-packed-name }}"
+        tar -xf "${{ inputs.test-conda-packed-name }}.tar.gz" -C "${CONDA_PREFIX}/envs/${{ inputs.test-conda-packed-name }}"
         set +u
         eval "$(conda shell.bash hook)"
         echo ${CONDA_PREFIX}

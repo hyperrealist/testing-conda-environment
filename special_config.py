@@ -2,9 +2,22 @@ import argparse
 import os
 import json
 
-bdict = {"csx": {"info1": "value1", "info2": "value2"},
-         "srx": {"info1": "value1", "info2": "value2"},
-         }
+action_map = {}
+def register(f):
+    action_map[f.__name__.lower()] = f
+    return f
+
+@register
+def tla1():
+    # action specific to beamline TLA1
+    ...
+
+@register
+def tla2():
+    # action specific to beamline TLA2
+    ...
+
+
 def main():
     curr_bdict = {}
 
@@ -12,22 +25,9 @@ def main():
     parser.add_argument("-b", "--beamline_acronym", help="Example csx")
     args = parser.parse_args()
 
+    beamline_actions = action_map.get(args.beamline_acronym.lower(), None)
+    if beamline_actions is not None:
+        beamline_actions()
 
-    curr_bdict = bdict.get(args.beamline_acronym, {})
-    if curr_bdict:
-        print(curr_bdict)
 if __name__ == "__main__":
     main()
-
-
-
-
-
-    # match args.beamline_acronym:
-    #     case "csx":
-    #         curr_bdict = bdict.get("csx")
-    #     case "srx":
-    #         pass
-    #         curr_bdict = bdict.get("srx")
-    #     case _:
-    #         pass
